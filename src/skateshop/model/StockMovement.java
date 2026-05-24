@@ -5,7 +5,6 @@ import skateshop.repository.Repository;
 
 public class StockMovement {
 	
-	private Repository<StockMovement> history = new Repository<>();
 
 	
     public enum MovementType { ENTRY, EXIT, ADJUSTMENT }

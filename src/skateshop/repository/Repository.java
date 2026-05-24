@@ -9,11 +9,11 @@ public class Repository<T> {
     private final List<T> elements = new ArrayList<>();
 
     public void add(T element)          { elements.add(element); }
-    public boolean eliminar(T elemento)      { return elements.remove(elemento); }
-    public List<T> obtenerTodos()            { return Collections.unmodifiableList(elements); }
-    public long contar()                     { return elements.size(); }
+    public boolean remove(T elemento)      { return elements.remove(elemento); }
+    public List<T> getAll()            { return Collections.unmodifiableList(elements); }
+    public long coount()                     { return elements.size(); }
 
-    public List<T> filtrar(java.util.function.Predicate<T> criteria) {
+    public List<T> filter(java.util.function.Predicate<T> criteria) {
         return elements.stream().filter(criteria).collect(Collectors.toList());
     }
 }

@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserService implements Searchable <User> {
 	private HashMap<String, User> users = new HashMap<>();
@@ -67,7 +69,14 @@ public class UserService implements Searchable <User> {
         .filter(u -> u instanceof Customer)
         .forEach(u -> System.out.println("  " + u));
     }
-
+    
+    
+    public Set<String> nombresDeClientes() {
+        return users.values().stream()
+            .filter(u -> u instanceof Customer)
+            .map(User::getUsername)
+            .collect(Collectors.toSet());
+    }
 	@Override
 	public User searchById(String id) throws ProductNotFoundException {
 		User user = users.get(id);

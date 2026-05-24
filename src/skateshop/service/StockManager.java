@@ -5,16 +5,21 @@ import skateshop.model.StockMovement;
 import skateshop.model.StockMovement.MovementType;
 import skateshop.model.products.Product;
 import skateshop.repository.FileManager;
+import skateshop.repository.Repository;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class StockManager {
     private static final int MIN_STOCK = 3;
     private final Catalog catalog;
+	private Repository<StockMovement> history = new Repository<>();
+
 
     public StockManager(Catalog catalog) {
         this.catalog = catalog;
+        this.history = new Repository<StockMovement>();
     }
 
     public boolean addStock(String productId, int qty) throws IOException {
@@ -25,6 +30,7 @@ public class StockManager {
         catalog.save();
         StockMovement sm = new StockMovement(p, MovementType.ENTRY, qty,
                 LocalDate.now().toString(), prev, p.getStock());
+        history.add(sm);
         FileManager.appendStockMovement(sm);
         System.out.printf("  Stock added. %s now has %d units.%n", productId, p.getStock());
         alert(p);
@@ -42,6 +48,7 @@ public class StockManager {
         catalog.save();
         StockMovement sm = new StockMovement(p, MovementType.EXIT, qty,
                 LocalDate.now().toString(), prev, p.getStock());
+        history.add(sm);
         FileManager.appendStockMovement(sm);
         alert(p);
         return true;
@@ -55,6 +62,7 @@ public class StockManager {
         catalog.save();
         StockMovement sm = new StockMovement(p, MovementType.ADJUSTMENT,
                 Math.abs(newQty - prev), LocalDate.now().toString(), prev, newQty);
+        history.add(sm);
         FileManager.appendStockMovement(sm);
         System.out.printf("  Stock adjusted: %s  %d -> %d%n", productId, prev, newQty);
         alert(p);
@@ -72,10 +80,22 @@ public class StockManager {
                     p.getBrand(), p.getId(), p.getStock());
         }
     }
-
-    public void printMovements() throws IOException {
-        var lines = FileManager.loadStockMovementLines();
-        if (lines.isEmpty()) { System.out.println("  No stock movements recorded."); return; }
-        lines.forEach(l -> System.out.println("  " + l));
+    
+    
+    public long productosConStockBajo(int minimum) {
+        return catalog.getProducts().stream()
+            .filter(p -> p.getStock() <= minimum)
+            .count();
     }
+    
+    
+    public void printMovements() {
+        List<StockMovement> all = history.getAll();
+        if (all.isEmpty()) { 
+            System.out.println("  No stock movements recorded."); 
+            return; 
+        }
+        all.forEach(sm -> System.out.println("  " + sm));
+    }
+
 }

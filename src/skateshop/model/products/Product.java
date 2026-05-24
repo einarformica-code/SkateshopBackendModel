@@ -1,5 +1,7 @@
 package skateshop.model.products;
 
+import java.util.Objects;
+
 import skateshop.interfaces.Exportable;
 
 public abstract class Product implements Exportable {
@@ -46,4 +48,24 @@ public abstract class Product implements Exportable {
     public String toDisplayString() {
     	return toString();
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(brand, id, price, stock);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		return Objects.equals(brand, other.brand) && Objects.equals(id, other.id)
+				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price) && stock == other.stock;
+	}
+    
+    
 }

@@ -1,3 +1,2 @@
-ADMIN|USR-001|admin|admin123|admin@skateshop.com|123 Skate Ave|555-0001
 CUSTOMER|USR-002|tony|hawk99|tony@example.com|900 Vert Lane|555-0002
-CUSTOMER|USR-001|einar|123|einarformica@gmail.com|sevilla|665243774
+ADMIN|USR-001|admin|admin123|admin@skateshop.com|123 Skate Ave|555-0001

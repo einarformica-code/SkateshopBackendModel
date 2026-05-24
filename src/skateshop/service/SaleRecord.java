@@ -5,8 +5,10 @@ import skateshop.repository.FileManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class SaleRecord {
 	private TreeMap<String, Sale> sales;
@@ -54,6 +56,21 @@ public class SaleRecord {
         for (Sale s : sales.values()) System.out.println("  " + s);
         System.out.printf("  ── Total revenue: $%.2f%n", totalRevenue());
     }
-
+    
+    
+    public double incomeByDate(String date) {
+        return sales.values().stream()
+            .filter(s -> s.getSaleDate().equals(date))
+            .mapToDouble(Sale::getTotalAmount)
+            .sum();
+    }
+    
+    public List<Sale> ventasOrdenadasPorImporte() {
+        return sales.values().stream()
+            .sorted(Comparator.comparingDouble(Sale::getTotalAmount).reversed())
+            .collect(Collectors.toList());
+    }
+    
+    
     public List<Sale> getSales() { return new ArrayList<>(sales.values()); }
 }

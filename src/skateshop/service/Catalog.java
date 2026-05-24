@@ -7,8 +7,10 @@ import skateshop.repository.FileManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class Catalog implements Searchable <Product> {
     private LinkedHashMap<String, Product> products;
@@ -67,6 +69,18 @@ public class Catalog implements Searchable <Product> {
             }
         }
         if (!found) System.out.println("  No products of type: " + type);
+    }
+    
+    /**
+     * Receives type of product and returns (if existing) the most expensive one. 
+     * Optional makes this operation safe regarding NullPointerExceptions.
+     * @param typpe
+     * @return
+     */
+    public Optional<Product> mostExpensiveByType(String type) {
+        return products.values().stream()
+            .filter(p -> p.getType().equalsIgnoreCase(type))
+            .max(Comparator.comparingDouble(Product::getPrice));
     }
 
 	@Override
