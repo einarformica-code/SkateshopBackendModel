@@ -1,54 +1,53 @@
 package skateshop.service;
 
+import skateshop.exceptions.ProductNotFoundException;
+import skateshop.interfaces.Searchable;
 import skateshop.model.products.Product;
 import skateshop.util.FileManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
-public class Catalog {
-    private List<Product> products;
+public class Catalog implements Searchable <Product> {
+    private LinkedHashMap<String, Product> products;
 
     public Catalog() {
-        products = new ArrayList<>();
+    	products =new LinkedHashMap<String, Product>();
     }
 
     public void load() throws IOException {
-        products = FileManager.loadCatalog();
+    	products = new LinkedHashMap<>();
+    	for (Product p : FileManager.loadCatalog()) {
+    	    products.put(p.getId(), p);
+    	}
     }
 
     public void save() throws IOException {
-        FileManager.saveCatalog(products);
+        FileManager.saveCatalog(new ArrayList<>(products.values()));
     }
 
     public void addProduct(Product p) throws IOException {
-        products.add(p);
+    	products.put(p.getId(), p);
         save();
     }
 
     public boolean removeProduct(String id) throws IOException {
-        boolean removed = products.removeIf(p -> p.getId().equals(id));
+    	boolean removed = products.remove(id) != null;
         if (removed) save();
         return removed;
     }
 
-    public Product getProduct(String id) {
-        return products.stream()
-                .filter(p -> p.getId().equalsIgnoreCase(id))
-                .findFirst().orElse(null);
-    }
+    public Product getProduct(String id) {return products.get(id);}
 
-    public List<Product> getProducts() { return products; }
+    public List<Product> getProducts() { return new ArrayList<>(products.values()); }
 
     public void updateProduct(Product updated) throws IOException {
-        for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getId().equals(updated.getId())) {
-                products.set(i, updated);
-                save();
-                return;
-            }
-        }
+    	if (products.containsKey(updated.getId())) {
+    	    products.put(updated.getId(), updated);
+    	    save();
+    	}
     }
 
     public void printAll() {
@@ -56,12 +55,12 @@ public class Catalog {
             System.out.println("  (catalog is empty)");
             return;
         }
-        products.forEach(p -> System.out.println("  " + p));
+        products.values().forEach(p -> System.out.println("  " + p));
     }
 
     public void printByType(String type) {
         boolean found = false;
-        for (Product p : products) {
+        for (Product p : products.values()) {
             if (p.getType().equalsIgnoreCase(type)) {
                 System.out.println("  " + p);
                 found = true;
@@ -69,4 +68,28 @@ public class Catalog {
         }
         if (!found) System.out.println("  No products of type: " + type);
     }
+
+	@Override
+	public Product searchById(String id) throws ProductNotFoundException {
+		Product product = products.get(id);
+		
+		if(product == null) {throw new ProductNotFoundException("Product with ID " + id + " not found");}
+		
+		return product;
+	}
+
+	@Override
+	public List <Product> searchByName(String name) {
+		List <Product> result = new ArrayList<>();
+		
+		for (Product p : products.values()) {
+			if (p.getBrand().equalsIgnoreCase(name)) {
+				result.add(p);
+			}
+		}
+		return result;
+		
+	}
+
+
 }

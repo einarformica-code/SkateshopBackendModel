@@ -1,6 +1,8 @@
 package skateshop.model;
 
-public class Sale implements  {
+import skateshop.interfaces.Exportable;
+
+public class Sale implements Exportable {
     private String saleId;
     private Order order;
     private String payment;   // e.g. "CASH", "CARD"
@@ -40,4 +42,10 @@ public class Sale implements  {
                 order.getCustomer().getUsername(),
                 payment, saleDate, totalAmount);
     }
+
+	@Override
+	public String toDisplayString() {
+		// TODO Auto-generated method stub
+		return toString();
+	}
 }
