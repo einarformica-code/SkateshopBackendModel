@@ -1,7 +1,7 @@
 package skateshop.service;
 
 import skateshop.model.Sale;
-import skateshop.util.FileManager;
+import skateshop.repository.FileManager;
 
 import java.io.IOException;
 import java.util.ArrayList;

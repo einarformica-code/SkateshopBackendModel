@@ -4,7 +4,7 @@ import skateshop.exceptions.InsufficientStockException;
 import skateshop.model.StockMovement;
 import skateshop.model.StockMovement.MovementType;
 import skateshop.model.products.Product;
-import skateshop.util.FileManager;
+import skateshop.repository.FileManager;
 
 import java.io.IOException;
 import java.time.LocalDate;

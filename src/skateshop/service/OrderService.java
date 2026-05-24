@@ -3,7 +3,7 @@ package skateshop.service;
 import skateshop.exceptions.InsufficientStockException;
 import skateshop.exceptions.ProductNotFoundException;
 import skateshop.model.*;
-import skateshop.util.FileManager;
+import skateshop.repository.FileManager;
 import skateshop.util.IdGenerator;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package skateshop.util;
+package skateshop.repository;
 
 import skateshop.model.*;
 import skateshop.model.products.*;

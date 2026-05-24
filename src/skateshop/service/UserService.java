@@ -6,7 +6,7 @@ import skateshop.interfaces.Searchable;
 import skateshop.model.Admin;
 import skateshop.model.Customer;
 import skateshop.model.User;
-import skateshop.util.FileManager;
+import skateshop.repository.FileManager;
 import skateshop.util.IdGenerator;
 
 import java.io.IOException;

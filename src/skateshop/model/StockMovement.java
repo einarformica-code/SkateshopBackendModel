@@ -1,11 +1,15 @@
 package skateshop.model;
 
 import skateshop.model.products.Product;
+import skateshop.repository.Repository;
 
 public class StockMovement {
+	
+	private Repository<StockMovement> history = new Repository<>();
 
+	
     public enum MovementType { ENTRY, EXIT, ADJUSTMENT }
-
+    
     private MovementType movementType;
     private int qty;
     private String date;

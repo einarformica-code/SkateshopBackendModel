@@ -3,7 +3,7 @@ package skateshop.service;
 import skateshop.exceptions.ProductNotFoundException;
 import skateshop.interfaces.Searchable;
 import skateshop.model.products.Product;
-import skateshop.util.FileManager;
+import skateshop.repository.FileManager;
 
 import java.io.IOException;
 import java.util.ArrayList;

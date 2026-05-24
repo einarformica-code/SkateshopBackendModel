@@ -1,4 +1,4 @@
-package skateshop.util;
+package skateshop.repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Repository<T> {
-	IMPLEMENTAR 
     private final List<T> elements = new ArrayList<>();
 
     public void add(T element)          { elements.add(element); }
