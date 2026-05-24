@@ -39,8 +39,8 @@ public class Main {
         try {
 			initServices();
 		} catch (DuplicateUsernameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    System.out.println("  Error initializing: " + e.getMessage());
+
 		}
         mainLoop();
         System.out.println("\n  Goodbye! Come back and skate soon.");
@@ -116,15 +116,15 @@ public class Main {
             	break;
             case "2":
             	
-            	try {
 				doRegister();
-            	} catch (DuplicateUsernameException e) {
-				e.printStackTrace();
-				
-			} break;
+            	
+			break;
 			
-            case "0": System.exit(0);
-            break;
+            case "0":
+                saveAll();
+                System.out.println("  See you soon!");
+                System.exit(0);
+                break;
             
             default: 
             invalid();
@@ -146,7 +146,7 @@ public class Main {
         }
     }
 
-    private static void doRegister() throws DuplicateUsernameException {
+    private static void doRegister() {
         String user  = prompt("Username");
         String pass  = prompt("Password");
         String email = prompt("Email");
@@ -155,7 +155,11 @@ public class Main {
         try {
             Customer c = userService.registerCustomer(user, pass, email, addr, phone);
             if (c != null) System.out.println("  ✓ Account created. You can now log in.");
-        } catch (IOException e) { ioError(e); }
+        } catch (IOException e) { 
+            ioError(e); 
+        } catch (DuplicateUsernameException e) {
+            System.out.println("  Error: " + e.getMessage());
+        }
     }
 
 
@@ -254,12 +258,13 @@ public class Main {
     private static void adminRemoveStock() {
         String id  = prompt("Product ID");
         int qty    = parseInt(prompt("Quantity to remove"));
-        try { stockManager.removeStock(id, qty); } 
-        catch (IOException e) { ioError(e); } 
-        catch (InsufficientStockException e) {
-			
-			e.printStackTrace();
-		}
+        try { 
+            stockManager.removeStock(id, qty); 
+        } catch (IOException e) { 
+            ioError(e); 
+        } catch (InsufficientStockException e) {
+            System.out.println("  Error: " + e.getMessage());
+        }
     }
 
     private static void adminAdjustStock() {
@@ -357,16 +362,14 @@ public class Main {
         System.out.print("  Confirm checkout? (y/n): ");
         if (!"y".equalsIgnoreCase(sc.nextLine().trim())) return;
         try {
-            try {
-				orderService.checkout(currentCart, pay);
-			} catch (InsufficientStockException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ProductNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        } catch (IOException e) { ioError(e); }
+            orderService.checkout(currentCart, pay);
+        } catch (InsufficientStockException e) {
+            System.out.println("  Error: " + e.getMessage());
+        } catch (ProductNotFoundException e) {
+            System.out.println("  Error: " + e.getMessage());
+        } catch (IOException e) { 
+            ioError(e); 
+        }
     }
 
     private static void customerHistory() {
@@ -380,7 +383,16 @@ public class Main {
         currentUser = null;
         currentCart = null;
     }
-
+    
+    private static void saveAll() {
+        try {
+            catalog.save();
+            userService.save();
+            System.out.println("  Data saved.");
+        } catch (IOException e) {
+            System.out.println("  Error saving data: " + e.getMessage());
+        }
+    }
     private static String prompt(String label) {
         System.out.print("  " + label + ": ");
         return sc.nextLine().trim();

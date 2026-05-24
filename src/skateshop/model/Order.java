@@ -21,6 +21,15 @@ public class Order implements Exportable {
         this.date = date;
         this.total = items.stream().mapToDouble(CartItem::subtotal).sum();
     }
+    //Copy constructors
+    public Order(Order other) {
+        this.orderId  = other.orderId;
+        this.customer = other.customer;
+        this.items    = new ArrayList<>(other.items);
+        this.status   = other.status;
+        this.date     = other.date;
+        this.total    = other.total;
+    }
 
     public String getOrderId()       { return orderId; }
     public Customer getCustomer()    { return customer; }

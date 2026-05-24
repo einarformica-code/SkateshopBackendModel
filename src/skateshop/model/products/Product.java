@@ -16,7 +16,13 @@ public abstract class Product implements Exportable {
         this.price = price;
         this.stock = stock;
     }
-
+    //Copy constructor
+    public Product(Product other) {
+        this.id    = other.id;
+        this.brand = other.brand;
+        this.price = other.price;
+        this.stock = other.stock;
+    }
     // Getters
     public String getId()     { return id; }
     public String getBrand()  { return brand; }

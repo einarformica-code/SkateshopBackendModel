@@ -12,7 +12,13 @@ public abstract class User implements Exportable{
         this.username = username;
         this.userPassword = userPassword;
     }
-
+    //Copy constructor
+    public User(User other) {
+        this.userId       = other.userId;
+        this.username     = other.username;
+        this.userPassword = other.userPassword;
+    }
+    
     public String getUserId()       { return userId; }
     public String getUsername()     { return username; }
     public String getUserPassword() { return userPassword; }

@@ -25,6 +25,9 @@ public class UserService implements Searchable <User> {
 
     public void load() throws IOException {
         users = new HashMap<>();
+        for (User u : FileManager.loadUsers()) {
+            users.put(u.getUsername(), u);
+        }
         
     }
 
