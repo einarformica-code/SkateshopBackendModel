@@ -1,5 +1,7 @@
 package skateshop.model;
-
+/**
+ * Admin represents the Administrator type of User, abl
+ */
 public class Admin extends User {
     private String email;
     private String address;

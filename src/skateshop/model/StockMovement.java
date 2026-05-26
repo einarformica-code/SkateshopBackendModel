@@ -5,9 +5,19 @@ import skateshop.repository.Repository;
 
 public class StockMovement {
 	
-
+/**
+ * Type of stock movement
+ * <p>
+ * Defines the nature of the operation done involving stock.
+ */
 	
-    public enum MovementType { ENTRY, EXIT, ADJUSTMENT }
+    public enum MovementType {
+    	//Entry of Stock
+    	ENTRY,
+    	//Elimination of stock
+    	EXIT, 
+    	//Modification of stock
+    	ADJUSTMENT }
     
     private MovementType movementType;
     private int qty;
