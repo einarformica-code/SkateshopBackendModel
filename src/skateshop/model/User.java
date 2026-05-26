@@ -1,7 +1,15 @@
 package skateshop.model;
 
 import skateshop.interfaces.Exportable;
-
+/**
+ * Base abstract class to represent an User extended by Admin or Customer.
+ * 
+ * <p>
+ * 	It requires an userId (that will be generated either in registerAdmin() or doRegister()
+ * depending on the role, username and password.
+ * Implementing Exportable signs the contract stating that it can be displayed as a String and introduced
+ * into a text file. Any user must be able to login.
+ */
 public abstract class User implements Exportable{
     private String userId;
     private String username;

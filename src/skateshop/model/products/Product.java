@@ -3,20 +3,42 @@ package skateshop.model.products;
 import java.util.Objects;
 
 import skateshop.interfaces.Exportable;
-
+/**
+ * 	Represents generic product that the catalog can store. 
+ * <p>
+ * It is the base abstract class for every type of product. It  the defines common attributes as 
+ * id,brand,price and stock. Furthermore establishes the need to be able to be serialized into a .txt
+ * document.
+ * <p>
+ * 
+ * @author Einar Formica
+ * @version 1.0.
+ * 
+ */
 public abstract class Product implements Exportable {
     private String id;
     private String brand;
     private double price;
     private int stock;
-
+    
+    /**
+     * This constructor receives all shared fields and creates a new Product. 
+     * It is required to be called by its subclasses to create an instance of a product
+     * in adminAddProduct() inside Main.
+     * @param id
+     * @param brand
+     * @param price
+     * @param stock
+     */
     public Product(String id, String brand, double price, int stock) {
         this.id = id;
         this.brand = brand;
         this.price = price;
         this.stock = stock;
     }
-    //Copy constructor
+    
+    
+    //Copy constructor. Creates another instance of an existing product.
     public Product(Product other) {
         this.id    = other.id;
         this.brand = other.brand;

@@ -1,6 +1,7 @@
 package skateshop;
 
 import skateshop.exceptions.DuplicateUsernameException;
+import skateshop.exceptions.HardnessOutOfRangeException;
 import skateshop.exceptions.InsufficientStockException;
 import skateshop.exceptions.ProductNotFoundException;
 import skateshop.model.*;
@@ -35,7 +36,7 @@ public class Main {
     private static Scanner sc          = new Scanner(System.in);
 
     // Main program
-    public static void main(String[] args) {
+    public static void main(String[] args) throws HardnessOutOfRangeException {
         try {
 			initServices();
 		} catch (DuplicateUsernameException e) {
@@ -47,7 +48,7 @@ public class Main {
     }
 
     // ── Initialisation ─────────────────────────────────────────
-    private static void initServices() throws DuplicateUsernameException {
+    private static void initServices() throws DuplicateUsernameException, HardnessOutOfRangeException {
         catalog       = new Catalog();
         stockManager  = new StockManager(catalog);
         saleRecord    = new SaleRecord();
@@ -65,8 +66,9 @@ public class Main {
     }
 
     /** Inserts demo records the very first time (empty files). 
-     * @throws DuplicateUsernameException */
-    private static void seedDemoDataIfEmpty() throws IOException, DuplicateUsernameException {
+     * @throws DuplicateUsernameException 
+     * @throws HardnessOutOfRangeException */
+    private static void seedDemoDataIfEmpty() throws IOException, DuplicateUsernameException, HardnessOutOfRangeException {
         if (catalog.getProducts().isEmpty()) {
             catalog.addProduct(new Board("B001", "Zero",  49.99, 10, 8.0));
             catalog.addProduct(new Board("B002", "Santa Cruz", 54.99, 8, 8.25));
@@ -240,7 +242,10 @@ public class Main {
                 default:
                     System.out.println("  Unknown type: " + type);
             }
-        } catch (IOException e) { ioError(e); }
+        } catch (IOException e) { ioError(e); } catch (HardnessOutOfRangeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     private static void adminDeleteProduct() {
