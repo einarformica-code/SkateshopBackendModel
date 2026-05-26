@@ -340,8 +340,14 @@ public class Main {
     private static void customerAddItem() {
         catalog.printAll();
         String id = prompt("Product ID to add");
-        Product p = catalog.getProduct(id);
-        if (p == null) { System.out.println("  Product not found."); return; }
+        Product p;
+		try {
+			p = catalog.searchById(id);
+		} catch (ProductNotFoundException e) {
+			System.out.println("Product with id:" + id + " not found." );
+			return;
+		}
+      
         int qty = parseInt(prompt("Quantity"));
         if (qty <= 0) { System.out.println("  Invalid quantity."); return; }
         if (p.getStock() < qty) {

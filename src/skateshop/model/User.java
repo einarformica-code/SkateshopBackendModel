@@ -42,6 +42,9 @@ public abstract class User implements Exportable{
     /** Serialize to pipe-separated line for TXT storage */
     public abstract String toFileString();
     
+    /**
+     * Calls the already existing toString function. Represents that User able to be expressed as a String.
+     */
     public String toDisplayString() {
 		return toString();
     	
