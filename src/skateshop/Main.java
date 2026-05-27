@@ -13,13 +13,14 @@ import skateshop.util.IdGenerator;
 import java.io.IOException;
 import java.util.Scanner;
 
+
 /**
  * SkateShop Console Application
  * ─────────────────────────────
  * Run this class from Eclipse (Run As → Java Application) or
  * from the terminal:  java -cp bin skateshop.Main
  *
- * Data is persisted in the  data/  folder as plain .txt files.
+ * Data is persisted in the  data/  folder as plain .text files.
  */
 public class Main {
 
@@ -54,7 +55,17 @@ public class Main {
     }
 
     
-    /** Initialises all services and loads persisted data, seeding demo data if empty. */
+
+    /**
+     * Instantiates all service objects, loads persisted data from disk, and
+     * synchronises the id generator counters so that IDs issued after a
+     * restart never collide with existing records.
+     * <p>After loading,seedDemoDataIfEmpty() is called to populate
+     * the catalog and create default users on the very first run.</p>
+     *
+     * @throws DuplicateUsernameException  if a seed username already exists
+     * @throws HardnessOutOfRangeException if a seed wheel has an invalid hardness
+     */   
     private static void initServices() throws DuplicateUsernameException, HardnessOutOfRangeException {
         catalog       = new Catalog();
         stockManager  = new StockManager(catalog);
@@ -77,10 +88,20 @@ public class Main {
             System.out.println("  Warning: could not load data files – " + e.getMessage());
         }
     }
-
-    /** Inserts demo records the very first time (empty files). 
-     * @throws DuplicateUsernameException 
-     * @throws HardnessOutOfRangeException */
+    
+    
+    /**
+     * Populates the catalog with 100 demo products (boards, trucks, wheels and
+     * bearings) and creates three default accounts ({@code admin}, {@code tony},
+     * {@code user}) if and only if the store is completely empty on first launch.
+     * <p>Each check is independent: products and users are seeded separately, so
+     * a store that already has products but is missing a default account will
+     * still have that account created.</p>
+     *
+     * @throws IOException                 if saving the seeded data to disk fails
+     * @throws DuplicateUsernameException  if a seed username already exists
+     * @throws HardnessOutOfRangeException if a seed wheel has an invalid hardness
+     */
     private static void seedDemoDataIfEmpty() throws IOException, DuplicateUsernameException, HardnessOutOfRangeException {
         if (catalog.getProducts().isEmpty()) {
 
@@ -202,7 +223,14 @@ public class Main {
                     "user@mail.com", "900 Vert Lane", "661254235");
         }
     }
-
+    /**
+     * Runs the application's top-level dispatch loop until the process exits.
+     * <p>On each iteration the loop delegates to the appropriate menu based on
+     * the current session state:</p>
+     * If no user is logged in it will show the logInMenu.
+     * If the logged in user is an admin it will call the showAdminMenu method.
+     * If the user logged in is a costumer it will call the showCustomerMenu method 
+     */
     // ── Main loop ──────────────────────────────────────────────
     private static void mainLoop() {
         while (true) {
@@ -218,7 +246,12 @@ public class Main {
 
 
     //  LOGIN / REGISTER
-
+    
+    /**
+     * Displays the unauthenticated landing menu and handles the user's choice.
+     * <p>Options: login (1), register as customer (2), or exit (0).
+     * Selecting exit triggers saveAll() before terminating.</p>
+     */
     private static void showLoginMenu() {
         header("Welcome to SkateShop");
         System.out.println("  1. Login");
@@ -247,7 +280,15 @@ public class Main {
             invalid();
         }
     }
-
+    
+    
+    
+    /**
+     * Prompts for credentials and attempts to authenticate the user.
+     * <p>On success, currentUser is set and, if the user is a
+     * Customer, currentCart instance of Cart is created for the session.
+     * On failure an error message is printed and the session remains unauthenticated.</p>
+     */
     private static void doLogin() {
         String user = prompt("Username");
         String pass = prompt("Password");
@@ -262,7 +303,15 @@ public class Main {
             }
         }
     }
-
+    
+    
+    /**
+     * Collects registration details from the console and creates a new
+     * Customer account.
+     * <p>The account is persisted immediately. If the chosen username is already
+     * taken a DuplicateUsernameException is caught and reported to the
+     * user without terminating the application.</p>
+     */
     private static void doRegister() {
         String user  = prompt("Username");
         String pass  = prompt("Password");
@@ -281,7 +330,12 @@ public class Main {
 
 
     //  ADMIN MENU
-  
+    /**
+     * Displays the admin panel and routes the selected option to the
+     * corresponding handler method.
+     * <p>Available actions cover catalog management, stock control, sales
+     * reporting, customer listing, order viewing, and logout.</p>
+     */	   
     private static void showAdminMenu() {
         header("Admin Panel – " + currentUser.getUsername());
         System.out.println("  ── Catalog ──");
@@ -318,12 +372,21 @@ public class Main {
             default:   invalid();
         }
     }
-
+    
+    
+    /**
+     * Prints the full product catalog to the console.
+     */
     private static void adminViewCatalog() {
         header("Product Catalog");
         catalog.printAll();
     }
-
+    
+    
+    /**
+     * Interactively collects product details from the admin and adds the new
+     * product to the catalog.
+     */
     private static void adminAddProduct() {
         header("Add Product");
         System.out.println("  Types: BOARD, TRUCK, WHEELS, BEARINGS");
@@ -362,19 +425,35 @@ public class Main {
 			e.printStackTrace();
 		}
     }
-
+    
+    /**
+     * Prompts the admin for a product ID and removes the matching product
+     * from the catalog.
+     */
     private static void adminDeleteProduct() {
         header("Delete Product");
         String id = prompt("Product ID");
         try { productService.deleteProduct(id); } catch (IOException e) { ioError(e); }
     }
-
+    
+    
+    /**
+     * Prompts the admin for a product ID and a quantity, then increases the
+     * product's stock by that amount.
+     */
     private static void adminAddStock() {
         String id  = prompt("Product ID");
         int qty    = parseInt(prompt("Quantity to add"));
         try { stockManager.addStock(id, qty); } catch (IOException e) { ioError(e); }
     }
-
+    
+    
+    /**
+     * Prompts the admin for a product ID and a quantity, then decreases the
+     * product's stock by that amount.
+     * <p>Prints an error message if the requested quantity exceeds current stock
+     * instead of allowing negative inventory.</p>
+     */
     private static void adminRemoveStock() {
         String id  = prompt("Product ID");
         int qty    = parseInt(prompt("Quantity to remove"));
@@ -386,32 +465,59 @@ public class Main {
             System.out.println("  Error: " + e.getMessage());
         }
     }
-
+    
+    
+    /**
+     * Prompts the admin for a product ID and a new absolute stock level, then
+     * sets the product's stock to exactly that value regardless of the current
+     * quantity.
+     */
     private static void adminAdjustStock() {
         String id  = prompt("Product ID");
         int qty    = parseInt(prompt("New stock level"));
         try { stockManager.adjustStock(id, qty); } catch (IOException e) { ioError(e); }
     }
-
+    
+    
+    /**
+     * Prints the full stock-movement history (restocks, removals, adjustments)
+     * to the console.
+     */
     private static void adminStockMovements() {
         header("Stock Movements");
-        try { stockManager.printMovements(); } catch (IOException e) { ioError(e); }
+        stockManager.printMovements();
     }
-
+    
+    
+    /**
+     * Prints all recorded sales together with the cumulative revenue total.
+     */
     private static void adminViewSales() {
         header("All Sales");
         saleRecord.printAll();
     }
-
+    
+    
+    /**
+     * Prints the total revenue generated by all completed sales.
+     */
     private static void adminRevenue() {
         System.out.printf("  Total revenue: $%.2f%n", saleRecord.totalRevenue());
     }
-
+    
+    
+    /**
+     * Prints the list of all registered customer accounts.
+     */
     private static void adminViewCustomers() {
         header("Customers");
         userService.printCustomers();
     }
-
+    
+    
+    /**
+     * Prints all orders that have been placed during the current session.
+     */
     private static void adminViewOrders() {
         header("All Orders");
         orderService.printOrders();
@@ -419,7 +525,14 @@ public class Main {
 
 
     //  CUSTOMER MENU
-
+    
+    
+    /**
+     * Displays the customer shop menu and routes the selected option to the
+     * corresponding handler method.
+     * <p>Available actions: browse catalog, view cart, add/remove items,
+     * checkout, purchase history, and logout.</p>
+     */
     private static void showCustomerMenu() {
         header("Shop – " + currentUser.getUsername());
         System.out.println("  1. Browse catalog");
@@ -434,24 +547,41 @@ public class Main {
             case "1": customerBrowse();   break;
             case "2": customerViewCart(); break;
             case "3": customerAddItem();  break;
-            case "4": customerRemItem();  break;
+            case "4": customerRemoveItem();  break;
             case "5": customerCheckout(); break;
             case "6": customerHistory();  break;
             case "0": logout();           break;
             default:  invalid();
         }
     }
-
+    
+    
+    /**
+     * Prints the full product catalog so the customer can browse available items.
+     */
     private static void customerBrowse() {
         header("Catalog");
         catalog.printAll();
     }
-
+    
+    
+    /**
+     * Prints the contents of the customer's current shopping cart including
+     * individual line totals and the cart grand total.
+     */
     private static void customerViewCart() {
         header("My Cart");
         currentCart.print();
     }
-
+    
+    
+    /**
+     * Guides the customer through selecting a product and a quantity to add to
+     * their cart.
+     * <p>Validates that the product exists and that sufficient stock is
+     * available before adding the item. Prints an appropriate error message
+     * otherwise.</p>
+     */
     private static void customerAddItem() {
         catalog.printAll();
         String id = prompt("Product ID to add");
@@ -471,14 +601,27 @@ public class Main {
         currentCart.addItem(p, qty);
         System.out.println("  Added to cart.");
     }
-
-    private static void customerRemItem() {
+    
+    
+    /**
+     * Displays the cart and prompts the customer for a product ID to remove.
+     * <p>Prints a confirmation if the item was found and removed, or an error
+     * message if it was not in the cart.</p>
+     */
+    private static void customerRemoveItem() {
         currentCart.print();
         String id = prompt("Product ID to remove");
         boolean ok = currentCart.removeItem(id);
         System.out.println(ok ? "  Item removed." : "  Item not in cart.");
     }
-
+    
+    
+    /**
+     * Runs the full checkout flow for the customer's current cart.
+     * <p>The customer selects a payment method (CASH or CARD) and confirms the
+     * purchase. On success, stock is decremented, a {@link Sale} is recorded,
+     * and the cart is cleared. The method is a no-op if the cart is empty.</p>
+     */
     private static void customerCheckout() {
         if (currentCart.isEmpty()) { System.out.println("  Cart is empty."); return; }
         header("Checkout");
@@ -497,19 +640,31 @@ public class Main {
             ioError(e); 
         }
     }
-
+    /**
+     * Prints all past sales associated with the currently logged-in customer.
+     */
     private static void customerHistory() {
         header("My Purchases");
         saleRecord.listByCustomer(currentUser.getUserId());
     }
 
     // ── Helpers ────────────────────────────────────────────────
+    /**
+     * Prints all past sales associated with the currently logged-in customer.
+     */
+    
     private static void logout() {
         System.out.println("  Logged out.");
         currentUser = null;
         currentCart = null;
     }
     
+    
+    /**
+     * Persists the catalog and user list to their respective data files.
+     * <p>Called before the application exits so that any changes made during
+     * the session are not lost.</p>
+     */
     private static void saveAll() {
         try {
             catalog.save();
@@ -519,21 +674,48 @@ public class Main {
             System.out.println("  Error saving data: " + e.getMessage());
         }
     }
+    
+    /**
+     * Displays a labelled prompt and returns the trimmed input entered by the user.
+     *
+     * @param label the prompt label shown before the colon (e.g. {@code "Username"})
+     * @return the trimmed string typed by the user
+     */
     private static String prompt(String label) {
         System.out.print("  " + label + ": ");
         return sc.nextLine().trim();
     }
-
+    
+    
+    /**
+     * Parses a code double from the given string.
+     * <p>Returns code 0 and prints a warning if the string is not a valid
+     * number, allowing the caller to continue without throwing.</p>
+     *
+     * @param s the string to parse
+     * @return the parsed value, or {@code 0} on parse failure
+     */
     private static double parseDouble(String s) {
         try { return Double.parseDouble(s); }
         catch (NumberFormatException e) { System.out.println("  Invalid number, using 0."); return 0; }
     }
-
+    
+    
+    /**
+     * Parses an Integer from the given string.
+     * <p>Returns {@code 0} and prints a warning if the string is not a valid
+     * integer, allowing the caller to continue without throwing.</p>
+     *
+     * @param s the string to parse
+     * @return the parsed value, or {@code 0} on parse failure
+     */
     private static int parseInt(String s) {
         try { return Integer.parseInt(s); }
         catch (NumberFormatException e) { System.out.println("  Invalid number, using 0."); return 0; }
     }
-
+    /**
+     * Prints a message indicating that the user entered an unrecognised menu option.
+     */
     private static void invalid() { System.out.println("  Invalid option."); }
     private static void ioError(IOException e) { System.out.println("  IO Error: " + e.getMessage()); }
 
