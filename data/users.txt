@@ -1,3 +1,4 @@
 CUSTOMER|USR-002|tony|hawk99|tony@example.com|900 Vert Lane|555-0002
+CUSTOMER|USR-004|user2|password2|email2@mail.com|zaragoza|665243774
 ADMIN|USR-001|admin|admin123|admin@skateshop.com|123 Skate Ave|555-0001
 CUSTOMER|USR-003|user|password|user@mail.com|900 Vert Lane|661254235

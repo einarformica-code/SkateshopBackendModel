@@ -6,6 +6,7 @@ import skateshop.exceptions.InsufficientStockException;
 import skateshop.exceptions.ProductNotFoundException;
 import skateshop.model.*;
 import skateshop.model.products.*;
+import skateshop.repository.FileManager;
 import skateshop.service.*;
 import skateshop.util.IdGenerator;
 
@@ -65,6 +66,12 @@ public class Main {
         try {
             catalog.load();
             userService.load();
+            // Initialise ID counters from persisted data so they never
+            // restart from their hardcoded defaults after a re-run.
+            IdGenerator.initialize(
+                    userService.getAllUsers(),
+                    FileManager.loadOrderRecords(),
+                    FileManager.loadSaleRecords());
             seedDemoDataIfEmpty();
         } catch (IOException e) {
             System.out.println("  Warning: could not load data files – " + e.getMessage());

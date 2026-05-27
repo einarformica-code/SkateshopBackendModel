@@ -93,6 +93,11 @@ public class UserService implements Searchable <User> {
     }
     
     
+    /** Returns all users as a list (used by IdGenerator.initialize). */
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users.values());
+    }
+
     /** Finds a user by username, or returns null if not found. */
     public User findByUsername(String username) {
     	return users.get(username);
