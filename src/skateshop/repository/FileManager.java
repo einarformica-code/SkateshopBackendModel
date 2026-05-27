@@ -59,11 +59,11 @@ public class FileManager {
             String type  = t[0];
             String id    = t[1];
             String brand = t[2];
-            double price = Double.parseDouble(t[3]);
+            double price = Double.parseDouble(t[3].replace(',', '.'));
             int stock    = Integer.parseInt(t[4]);
             switch (type) {
-                case "TRUCK":    return new Truck(id, brand, price, stock, Double.parseDouble(t[5]));
-                case "BOARD":    return new Board(id, brand, price, stock, Double.parseDouble(t[5]));
+                case "TRUCK":    return new Truck(id, brand, price, stock, Double.parseDouble(t[5].replace(',', '.')));
+                case "BOARD":    return new Board(id, brand, price, stock, Double.parseDouble(t[5].replace(',', '.')));
                 case "WHEELS":   return new Wheels(id, brand, price, stock, Integer.parseInt(t[5]), t[6]);
                 case "BEARINGS": return new Bearings(id, brand, price, stock);
                 default: System.err.println("Unknown product type: " + type); return null;
