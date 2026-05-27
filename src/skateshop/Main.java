@@ -76,13 +76,111 @@ public class Main {
      * @throws HardnessOutOfRangeException */
     private static void seedDemoDataIfEmpty() throws IOException, DuplicateUsernameException, HardnessOutOfRangeException {
         if (catalog.getProducts().isEmpty()) {
-            catalog.addProduct(new Board("B001", "Zero",  49.99, 10, 8.0));
-            catalog.addProduct(new Board("B002", "Santa Cruz", 54.99, 8, 8.25));
-            catalog.addProduct(new Truck("T001", "Independent", 34.99, 15, 5.25));
-            catalog.addProduct(new Truck("T002", "Venture",     31.99, 12, 5.0));
-            catalog.addProduct(new Wheels("W001", "Spitfire", 24.99, 20, 52, "99A"));
-            catalog.addProduct(new Wheels("W002", "OJ Wheels", 22.99, 18, 54, "87A"));
-            catalog.addProduct(new Bearings("BR01", "Bones Reds", 9.99, 25));
+
+        	catalog.addProduct(new Board("B001", "Zero", 49.99, 10, 8.0));
+        	catalog.addProduct(new Board("B002", "Santa Cruz", 54.99, 8, 8.25));
+        	catalog.addProduct(new Board("B003", "Element", 52.99, 12, 8.0));
+        	catalog.addProduct(new Board("B004", "Baker", 56.99, 9, 8.125));
+        	catalog.addProduct(new Board("B005", "Girl", 58.99, 7, 8.25));
+        	catalog.addProduct(new Board("B006", "Chocolate", 57.49, 6, 8.5));
+        	catalog.addProduct(new Board("B007", "Plan B", 59.99, 11, 8.0));
+        	catalog.addProduct(new Board("B008", "Blind", 47.99, 14, 7.75));
+        	catalog.addProduct(new Board("B009", "Enjoi", 50.99, 10, 8.25));
+        	catalog.addProduct(new Board("B010", "Toy Machine", 55.49, 5, 8.38));
+        	catalog.addProduct(new Board("B011", "Primitive", 61.99, 8, 8.5));
+        	catalog.addProduct(new Board("B012", "DGK", 52.49, 9, 8.0));
+        	catalog.addProduct(new Board("B013", "Flip", 54.49, 7, 8.13));
+        	catalog.addProduct(new Board("B014", "Creature", 60.99, 6, 8.6));
+        	catalog.addProduct(new Board("B015", "Anti Hero", 63.99, 5, 8.75));
+        	catalog.addProduct(new Board("B016", "Real", 57.49, 9, 8.25));
+        	catalog.addProduct(new Board("B017", "Krooked", 56.99, 10, 8.38));
+        	catalog.addProduct(new Board("B018", "Deathwish", 58.49, 8, 8.5));
+        	catalog.addProduct(new Board("B019", "Alien Workshop", 62.99, 6, 8.25));
+        	catalog.addProduct(new Board("B020", "Almost", 53.99, 11, 8.0));
+        	catalog.addProduct(new Board("B021", "Zoo York", 51.99, 10, 8.13));
+        	catalog.addProduct(new Board("B022", "Birdhouse", 55.99, 8, 8.25));
+        	catalog.addProduct(new Board("B023", "Powell Peralta", 64.99, 4, 8.75));
+        	catalog.addProduct(new Board("B024", "Foundation", 52.49, 7, 8.0));
+        	catalog.addProduct(new Board("B025", "Habitat", 57.99, 6, 8.25));
+
+        	catalog.addProduct(new Truck("T001", "Independent", 34.99, 15, 5.25));
+        	catalog.addProduct(new Truck("T002", "Venture", 31.99, 12, 5.0));
+        	catalog.addProduct(new Truck("T003", "Thunder", 36.99, 11, 5.25));
+        	catalog.addProduct(new Truck("T004", "Ace", 39.99, 10, 5.5));
+        	catalog.addProduct(new Truck("T005", "Tensor", 29.99, 14, 5.0));
+        	catalog.addProduct(new Truck("T006", "Krux", 32.49, 13, 5.25));
+        	catalog.addProduct(new Truck("T007", "Royal", 30.99, 9, 5.25));
+        	catalog.addProduct(new Truck("T008", "Slappy", 38.99, 7, 5.5));
+        	catalog.addProduct(new Truck("T009", "Film", 33.99, 8, 5.25));
+        	catalog.addProduct(new Truck("T010", "Destructo", 35.99, 10, 5.5));
+        	catalog.addProduct(new Truck("T011", "Paris", 42.99, 6, 6.0));
+        	catalog.addProduct(new Truck("T012", "Caliber", 44.99, 5, 6.5));
+        	catalog.addProduct(new Truck("T013", "Bear", 41.99, 8, 6.0));
+        	catalog.addProduct(new Truck("T014", "Gullwing", 39.49, 9, 6.25));
+        	catalog.addProduct(new Truck("T015", "Tracker", 37.99, 7, 5.75));
+        	catalog.addProduct(new Truck("T016", "Bullet", 28.99, 12, 5.0));
+        	catalog.addProduct(new Truck("T017", "Core", 31.49, 11, 5.25));
+        	catalog.addProduct(new Truck("T018", "Mini Logo", 27.99, 14, 5.0));
+        	catalog.addProduct(new Truck("T019", "Iron", 35.49, 8, 5.5));
+        	catalog.addProduct(new Truck("T020", "Lux", 33.49, 9, 5.25));
+        	catalog.addProduct(new Truck("T021", "Randal", 45.99, 5, 6.5));
+        	catalog.addProduct(new Truck("T022", "Sidewinder", 49.99, 4, 7.0));
+        	catalog.addProduct(new Truck("T023", "Navigator", 43.49, 6, 6.25));
+        	catalog.addProduct(new Truck("T024", "Sure-Grip", 40.99, 7, 6.0));
+        	catalog.addProduct(new Truck("T025", "Venom", 38.49, 8, 5.75));
+
+        	catalog.addProduct(new Wheels("W001", "Spitfire", 24.99, 20, 52, "99A"));
+        	catalog.addProduct(new Wheels("W002", "OJ Wheels", 22.99, 18, 54, "87A"));
+        	catalog.addProduct(new Wheels("W003", "Bones", 27.99, 16, 53, "99A"));
+        	catalog.addProduct(new Wheels("W004", "Ricta", 25.99, 15, 54, "92A"));
+        	catalog.addProduct(new Wheels("W005", "Pig", 21.99, 14, 52, "101A"));
+        	catalog.addProduct(new Wheels("W006", "Mini Logo", 19.99, 17, 51, "95A"));
+        	catalog.addProduct(new Wheels("W007", "Satori", 23.99, 13, 56, "78A"));
+        	catalog.addProduct(new Wheels("W008", "Orbs", 24.49, 11, 53, "99A"));
+        	catalog.addProduct(new Wheels("W009", "Autobahn", 28.49, 10, 54, "101A"));
+        	catalog.addProduct(new Wheels("W010", "Wayward", 26.99, 9, 55, "99A"));
+        	catalog.addProduct(new Wheels("W011", "Cloud Ride", 29.99, 8, 60, "78A"));
+        	catalog.addProduct(new Wheels("W012", "Sector 9", 32.99, 7, 65, "80A"));
+        	catalog.addProduct(new Wheels("W013", "Hawgs", 34.99, 6, 70, "78A"));
+        	catalog.addProduct(new Wheels("W014", "Remember", 31.49, 5, 68, "80A"));
+        	catalog.addProduct(new Wheels("W015", "Venom", 33.99, 6, 72, "78A"));
+        	catalog.addProduct(new Wheels("W016", "Santa Cruz Slime Balls", 26.49, 12, 54, "97A"));
+        	catalog.addProduct(new Wheels("W017", "Speedlab", 27.49, 10, 53, "99A"));
+        	catalog.addProduct(new Wheels("W018", "Force", 22.49, 11, 52, "95A"));
+        	catalog.addProduct(new Wheels("W019", "Darkstar", 20.99, 14, 51, "99A"));
+        	catalog.addProduct(new Wheels("W020", "Globe", 23.99, 9, 55, "90A"));
+        	catalog.addProduct(new Wheels("W021", "Dusters", 25.49, 8, 58, "85A"));
+        	catalog.addProduct(new Wheels("W022", "Landyachtz", 36.99, 5, 70, "78A"));
+        	catalog.addProduct(new Wheels("W023", "Blood Orange", 38.99, 4, 72, "80A"));
+        	catalog.addProduct(new Wheels("W024", "Cult", 24.99, 10, 54, "99A"));
+        	catalog.addProduct(new Wheels("W025", "Alien Workshop", 27.99, 7, 53, "101A"));
+
+        	catalog.addProduct(new Bearings("BR01", "Bones Reds", 9.99, 25));
+        	catalog.addProduct(new Bearings("BR02", "Bronson G2", 12.99, 22));
+        	catalog.addProduct(new Bearings("BR03", "Rush ABEC 7", 8.99, 20));
+        	catalog.addProduct(new Bearings("BR04", "Mini Logo", 7.99, 18));
+        	catalog.addProduct(new Bearings("BR05", "Shake Junt", 10.99, 16));
+        	catalog.addProduct(new Bearings("BR06", "FKD", 11.49, 15));
+        	catalog.addProduct(new Bearings("BR07", "Spitfire Cheapshots", 9.49, 14));
+        	catalog.addProduct(new Bearings("BR08", "Independent GP-R", 14.99, 12));
+        	catalog.addProduct(new Bearings("BR09", "Andale Blues", 13.99, 11));
+        	catalog.addProduct(new Bearings("BR10", "Bones Swiss", 49.99, 8));
+        	catalog.addProduct(new Bearings("BR11", "Bronson Raw", 15.99, 10));
+        	catalog.addProduct(new Bearings("BR12", "Modus ABEC 5", 8.49, 13));
+        	catalog.addProduct(new Bearings("BR13", "Pig Bearings", 7.99, 17));
+        	catalog.addProduct(new Bearings("BR14", "Black Panther", 16.99, 9));
+        	catalog.addProduct(new Bearings("BR15", "Lucky Bearings", 11.99, 12));
+        	catalog.addProduct(new Bearings("BR16", "Rush Bombers", 9.99, 14));
+        	catalog.addProduct(new Bearings("BR17", "Zealous", 17.99, 8));
+        	catalog.addProduct(new Bearings("BR18", "Fireball Dragon", 19.99, 7));
+        	catalog.addProduct(new Bearings("BR19", "Sector 9 PDP", 21.99, 6));
+        	catalog.addProduct(new Bearings("BR20", "Rockstar Bearings", 10.49, 15));
+        	catalog.addProduct(new Bearings("BR21", "Diamond Bearings", 12.49, 13));
+        	catalog.addProduct(new Bearings("BR22", "Toy Machine Bearings", 13.49, 11));
+        	catalog.addProduct(new Bearings("BR23", "Element Bearings", 9.49, 16));
+        	catalog.addProduct(new Bearings("BR24", "Primitive Bearings", 14.49, 10));
+        	catalog.addProduct(new Bearings("BR25", "Girl Bearings", 12.99, 12));
+
         }
         if (userService.findByUsername("admin") == null) {
             userService.registerAdmin("admin", "admin123",
