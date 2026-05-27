@@ -47,7 +47,8 @@ public class FileManager {
         }
         return list;
     }
-
+    
+    /** Parses a product line from the catalog file. */
     private static Product parseProduct(String line) {
         String[] t = line.split("\\|");
         try {

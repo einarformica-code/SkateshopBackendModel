@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import skateshop.interfaces.Exportable;
-
+/**
+ * Represents an order placed by a customer, containing a list of items.
+ * Orders have a status (PENDING, CONFIRMED, SHIPPED, CANCELED) and a creation date.
+ */
 public class Order implements Exportable {
     private String orderId;
     private Customer customer;
@@ -12,7 +15,14 @@ public class Order implements Exportable {
     private OrderStatus status;
     private String date;
     private double total;
-
+    
+    /**
+     * Constructs a new Order with a generated ID and current date.
+     * @param orderId  unique order identifier
+     * @param customer the customer who placed the order
+     * @param items    list of cart items
+     * @param date     order creation date (as string)
+     */
     public Order(String orderId, Customer customer, List<CartItem> items, String date) {
         this.orderId = orderId;
         this.customer = customer;

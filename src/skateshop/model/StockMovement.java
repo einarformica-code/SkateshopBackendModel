@@ -2,7 +2,10 @@ package skateshop.model;
 
 import skateshop.model.products.Product;
 import skateshop.repository.Repository;
-
+/**
+ * Records a change in stock for a product: entry, exit, or adjustment.
+ * Stores the previous stock, new stock, quantity changed, and the date.
+ */
 public class StockMovement {
 	
 /**
@@ -25,7 +28,16 @@ public class StockMovement {
     private int previousStock;
     private int resultingStock;
     private Product product;
-
+    
+    /**
+     * Constructs a stock movement record.
+     * @param product        the product affected
+     * @param movementType   type of movement (ENTRY, EXIT, ADJUSTMENT)
+     * @param qty            quantity added/removed (absolute value)
+     * @param date           date of the movement
+     * @param previousStock  stock before the movement
+     * @param resultingStock stock after the movement
+     */
     public StockMovement(Product product, MovementType movementType,
                          int qty, String date, int previousStock, int resultingStock) {
         this.product = product;

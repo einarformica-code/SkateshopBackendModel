@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Class used for identificator generation
  * 
- * It is used to guarantee exclusive id's in new orders, sales and users.  
+ * It is used to guarantee exclusive id's in new orders, sales and users.  After execution, all files should be emptied
  */
 public class IdGenerator {
 	/**

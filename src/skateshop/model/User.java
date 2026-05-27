@@ -15,12 +15,21 @@ public abstract class User implements Exportable{
     private String username;
     private String userPassword;
 
+    /**
+     * Constructs a User with basic credentials.
+     * @param userId       unique identifier
+     * @param username     login name
+     * @param userPassword password
+     */
     public User(String userId, String username, String userPassword) {
         this.userId = userId;
         this.username = username;
         this.userPassword = userPassword;
     }
-    //Copy constructor
+    /**
+     * Copy constructor – creates a new User instance from an existing one.
+     * @param other the user to copy
+     */
     public User(User other) {
         this.userId       = other.userId;
         this.username     = other.username;
@@ -37,6 +46,7 @@ public abstract class User implements Exportable{
 
     public abstract boolean login(String username, String password);
 
+    /** Returns the role string ("ADMIN" or "CUSTOMER"). */
     public abstract String getRole();
 
     /** Serialize to pipe-separated line for TXT storage */
