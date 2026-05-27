@@ -60,8 +60,7 @@ public class StockMovement {
                 product.getId(), movementType, qty, date, previousStock, resultingStock);
     }
 
-    @Override
-    public String toString() {
+    public String troString() {
         return String.format("[%s] Product:%-6s  Type:%-12s  Qty:%4d  %d -> %d  Date:%s",
                 date, product.getId(), movementType, qty, previousStock, resultingStock);
     }

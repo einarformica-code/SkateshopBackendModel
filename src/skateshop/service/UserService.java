@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+/**
+ * Service for user management: registration, login, persistence, and search.
+ */
 public class UserService implements Searchable <User> {
 	private HashMap<String, User> users = new HashMap<>();
 
@@ -23,6 +25,8 @@ public class UserService implements Searchable <User> {
         this.users = new HashMap<>();
     }
 
+    
+    /** Loads users from the users file into memory. */
     public void load() throws IOException {
         users = new HashMap<>();
         for (User u : FileManager.loadUsers()) {
@@ -30,7 +34,9 @@ public class UserService implements Searchable <User> {
         }
         
     }
-
+    
+    
+    /** Saves all users to the users file. */
     public void save() throws IOException {
     	FileManager.saveUsers(new ArrayList<>(users.values()));
 
@@ -42,7 +48,19 @@ public class UserService implements Searchable <User> {
     	if (u != null && u.login(username, password)) return u;
     	return null;
     }
-
+    
+    
+    /**
+     * Registers a new customer.
+     * @param username desired username (must be unique)
+     * @param password password
+     * @param email    customer email
+     * @param address  customer address
+     * @param phone    customer phone
+     * @return the newly created Customer
+     * @throws IOException if saving fails
+     * @throws DuplicateUsernameException if username already exists
+     */
     public Customer registerCustomer(String username, String password,
                                      String email, String address, String phone) throws IOException, DuplicateUsernameException {
         if (findByUsername(username) != null) {
@@ -54,7 +72,18 @@ public class UserService implements Searchable <User> {
         save();
         return c;
     }
-
+    
+    
+    /**
+     * Registers a new admin.
+     * @param username desired username
+     * @param password password
+     * @param email    admin email
+     * @param address  admin address
+     * @param phone    admin phone
+     * @return the newly created Admin
+     * @throws IOException if saving fails
+     */
     public Admin registerAdmin(String username, String password,
                                String email, String address, String phone) throws IOException {
         Admin a = new Admin(IdGenerator.nextUserId(), username, password, email, address, phone);
@@ -62,7 +91,9 @@ public class UserService implements Searchable <User> {
         save();
         return a;
     }
-
+    
+    
+    /** Finds a user by username, or returns null if not found. */
     public User findByUsername(String username) {
     	return users.get(username);
     }
@@ -74,7 +105,8 @@ public class UserService implements Searchable <User> {
     }
     
     
-    public Set<String> nombresDeClientes() {
+    /** Returns a set of all customer usernames. */
+    public Set<String> clientNames() {
         return users.values().stream()
             .filter(u -> u instanceof Customer)
             .map(User::getUsername)

@@ -35,7 +35,12 @@ public class Main {
     private static Cart    currentCart = null;
     private static Scanner sc          = new Scanner(System.in);
 
-    // Main program
+
+    /**
+     * Program entry point. If initialization succeeds it enters main loop.
+     * @param args command line arguments (not used)
+     * @throws HardnessOutOfRangeException if demo data contains invalid wheel hardness
+     */
     public static void main(String[] args) throws HardnessOutOfRangeException {
         try {
 			initServices();
@@ -47,7 +52,8 @@ public class Main {
         System.out.println("\n  Goodbye! Come back and skate soon.");
     }
 
-    // ── Initialisation ─────────────────────────────────────────
+    
+    /** Initialises all services and loads persisted data, seeding demo data if empty. */
     private static void initServices() throws DuplicateUsernameException, HardnessOutOfRangeException {
         catalog       = new Catalog();
         stockManager  = new StockManager(catalog);
@@ -85,6 +91,10 @@ public class Main {
         if (userService.findByUsername("tony") == null) {
             userService.registerCustomer("tony", "hawk99",
                     "tony@example.com", "900 Vert Lane", "555-0002");
+        }
+        if (userService.findByUsername("user") == null) {
+            userService.registerCustomer("user", "password",
+                    "user@mail.com", "900 Vert Lane", "661254235");
         }
     }
 

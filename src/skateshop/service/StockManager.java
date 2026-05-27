@@ -10,7 +10,9 @@ import skateshop.repository.Repository;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-
+/**
+ * Manages stock levels of products, records movements, and alerts low stock.
+ */
 public class StockManager {
     private static final int MIN_STOCK = 3;
     private final Catalog catalog;
@@ -21,25 +23,51 @@ public class StockManager {
         this.catalog = catalog;
         this.history = new Repository<StockMovement>();
     }
-
+    
+    
+    /**
+    * Increases stock of a product by the given quantity.
+    * @param productId product identifier
+    * @param qty       positive quantity to add
+    * @return true if product found and stock updated
+    * @throws IOException if saving fails
+    */
     public boolean addStock(String productId, int qty) throws IOException {
         Product p = catalog.getProduct(productId);
-        if (p == null) { System.out.println("  Product not found: " + productId); return false; }
+        if (p == null) { 
+        	System.out.println("  Product not found: " + productId); 
+        	return false; 
+        	}
+        
         int prev = p.getStock();
         p.setStock(prev + qty);
         catalog.save();
+        //Register Stock
         StockMovement sm = new StockMovement(p, MovementType.ENTRY, qty,
                 LocalDate.now().toString(), prev, p.getStock());
+        //Save stock movement in history
         history.add(sm);
         FileManager.appendStockMovement(sm);
         System.out.printf("  Stock added. %s now has %d units.%n", productId, p.getStock());
         alert(p);
         return true;
     }
-
+    
+    
+    /**
+     * Decreases stock of a product.
+     * @param productId product identifier
+     * @param qty       quantity to remove
+     * @return true if successful
+     * @throws IOException if saving fails
+     * @throws InsufficientStockException if stock would become negative
+     */
     public boolean removeStock(String productId, int qty) throws IOException,InsufficientStockException {
         Product p = catalog.getProduct(productId);
-        if (p == null) { System.out.println("  Product not found: " + productId); return false; }
+        if (p == null) {
+        	System.out.println("  Product not found: " + productId); 
+        	return false; 
+        	}
         if (p.getStock() < qty) {
             throw new InsufficientStockException(productId, p.getStock(), qty);
         }
@@ -53,7 +81,15 @@ public class StockManager {
         alert(p);
         return true;
     }
-
+    
+    
+    /**
+     * Sets the stock of a product to an exact new value (adjustment).
+     * @param productId product identifier
+     * @param newQty    desired stock level
+     * @return true if successful
+     * @throws IOException if saving fails
+     */
     public boolean adjustStock(String productId, int newQty) throws IOException {
         Product p = catalog.getProduct(productId);
         if (p == null) { System.out.println("  Product not found: " + productId); return false; }
@@ -68,7 +104,9 @@ public class StockManager {
         alert(p);
         return true;
     }
-
+    
+    
+    /** Returns the current stock of a product, or -1 if not found. */
     public int checkStock(String productId) {
         Product p = catalog.getProduct(productId);
         return p != null ? p.getStock() : -1;
@@ -76,13 +114,13 @@ public class StockManager {
 
     private void alert(Product p) {
         if (p.getStock() <= MIN_STOCK) {
-            System.out.printf("  ⚠  LOW STOCK ALERT: %s (%s) has only %d unit(s) left!%n",
+            System.out.printf("   LOW STOCK ALERT: %s (%s) has only %d unit(s) left!%n",
                     p.getBrand(), p.getId(), p.getStock());
         }
     }
     
-    
-    public long productosConStockBajo(int minimum) {
+    /** Returns the number of products with stock less than or equal to the given minimum. */ 
+    public long productsWithLowStock(int minimum) {
         return catalog.getProducts().stream()
             .filter(p -> p.getStock() <= minimum)
             .count();

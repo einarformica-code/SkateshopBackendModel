@@ -24,13 +24,17 @@ public class FileManager {
         new File(DATA_DIR).mkdirs();
     }
 
-    // ────────────────────────── CATALOG ─────────────────────────
-
+    //────────────────────────── CATALOG ─────────────────────────
+    
+    /** Saves the list of products to catalog.txt. */
+    
+    
     public static void saveCatalog(List<Product> products) throws IOException {
         try (PrintWriter pw = new PrintWriter(new FileWriter(CATALOG_FILE))) {
             for (Product p : products) pw.println(p.toFileString());
         }
     }
+    /** Loads products from catalog.txt; returns an empty list if file does not exist. */
 
     public static List<Product> loadCatalog() throws IOException {
         List<Product> list = new ArrayList<>();
@@ -71,13 +75,16 @@ public class FileManager {
     }
 
     // ────────────────────────── USERS ───────────────────────────
+    /** Saves all users to users.txt. */
 
     public static void saveUsers(List<User> users) throws IOException {
         try (PrintWriter pw = new PrintWriter(new FileWriter(USERS_FILE))) {
             for (User u : users) pw.println(u.toFileString());
         }
     }
-
+    
+    
+    /** Loads users from users.txt; returns empty list if file does not exist. */
     public static List<User> loadUsers() throws IOException {
         List<User> list = new ArrayList<>();
         File f = new File(USERS_FILE);
@@ -101,6 +108,8 @@ public class FileManager {
         }
         return list;
     }
+    
+    
 
     // ────────────────────────── ORDERS ──────────────────────────
 
@@ -119,7 +128,8 @@ public class FileManager {
                     order.getTotal()));
         }
     }
-
+    
+    /** Loads all order records as arrays of strings (raw lines). */
     public static List<String[]> loadOrderRecords() throws IOException {
         List<String[]> list = new ArrayList<>();
         File f = new File(ORDERS_FILE);
@@ -135,13 +145,14 @@ public class FileManager {
     }
 
     // ────────────────────────── SALES ───────────────────────────
-
+    /** Appends a sale record to sales.txt. */
     public static void appendSale(Sale sale) throws IOException {
         try (PrintWriter pw = new PrintWriter(new FileWriter(SALES_FILE, true))) {
             pw.println(sale.toFileString());
         }
     }
 
+    /** Loads all sale records as raw string arrays. */
     public static List<String[]> loadSaleRecords() throws IOException {
         List<String[]> list = new ArrayList<>();
         File f = new File(SALES_FILE);
@@ -157,13 +168,13 @@ public class FileManager {
     }
 
     // ────────────────────── STOCK MOVEMENTS ─────────────────────
-
+    /** Appends a stock movement line to stock_movements.txt. */
     public static void appendStockMovement(StockMovement sm) throws IOException {
         try (PrintWriter pw = new PrintWriter(new FileWriter(STOCK_FILE, true))) {
             pw.println(sm.toFileString());
         }
     }
-
+    /** Loads all stock movement lines as raw strings. */
     public static List<String> loadStockMovementLines() throws IOException {
         List<String> list = new ArrayList<>();
         File f = new File(STOCK_FILE);
