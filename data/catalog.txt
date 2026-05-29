@@ -95,6 +95,6 @@ BEARINGS|BR19|Sector 9 PDP|21,99|6
 BEARINGS|BR20|Rockstar Bearings|10,49|15
 BEARINGS|BR21|Diamond Bearings|12,49|13
 BEARINGS|BR22|Toy Machine Bearings|13,49|11
-BEARINGS|BR23|Element Bearings|9,49|16
-BEARINGS|BR24|Primitive Bearings|14,49|10
+BEARINGS|BR23|Element Bearings|9,49|19
+BEARINGS|BR24|Primitive Bearings|14,49|110
 BEARINGS|BR25|Girl Bearings|12,99|12
